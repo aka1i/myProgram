@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clipChildren="false"
+    tools:context=".MeFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/bizhi">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="-32dp"
+            android:src="@drawable/profile"
+            app:civ_border_color="#ff000000"
+            app:civ_border_width="2dp" />
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignTop="@+id/profile_image"-->
+        <!--android:layout_marginStart="15dp"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_toEndOf="@+id/profile_image"-->
+        <!--android:layout_toRightOf="@+id/profile_image"-->
+        <!--android:text="阿卡林的存在感丶"-->
+        <!--android:textColor="@android:color/black"/>-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/bananas"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:drawableLeft="@drawable/bananas"-->
+        <!--android:drawablePadding="5dp"-->
+        <!--android:text="999"-->
+        <!--android:textColor="@android:color/black"-->
+        <!--android:textSize="10dp" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_marginStart="67dp"-->
+        <!--android:layout_marginTop="35dp"-->
+        <!--android:layout_marginEnd="139dp"-->
+        <!--android:layout_toEndOf="@+id/bananas"-->
+        <!--android:drawableLeft="@drawable/banana"-->
+        <!--android:drawablePadding="5dp"-->
+        <!--android:gravity="center_vertical|left"-->
+        <!--android:text="55555"-->
+        <!--android:textSize="10dp" />-->
+
+
+    </RelativeLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ac1"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ac1"
+        app:civ_border_color="#ff000000"
+        app:civ_border_width="2dp" />
+</RelativeLayout>

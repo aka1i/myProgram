@@ -1,0 +1,20 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/mycolor</item>
+        <item name="colorPrimaryDark">@color/mycolor</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="popup_theme" parent="@style/ThemeOverlay.AppCompat.Light">
+        <!--设置背景-->
+        <item name="android:background">@color/popupmenu</item>
+        <!--设置字体颜色-->
+        <item name="android:textColor">@android:color/white</item>
+        <!--设置不覆盖锚点-->
+        <item name="overlapAnchor">false</item>
+    </style>
+
+</resources>
