@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
@@ -60,8 +61,13 @@ public class ScheduleActivity extends AppCompatActivity {
     }
      public static Intent newIntent(Context packageContext, UUID uuid){
          Intent intent = new Intent(packageContext,ScheduleActivity.class);
-         Log.d("dadad0", String.valueOf(uuid));
+
          intent.putExtra(EXTRA_SCHEDUL, uuid);
         return intent;
      }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.note_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 }

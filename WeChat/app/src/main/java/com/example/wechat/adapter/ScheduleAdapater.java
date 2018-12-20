@@ -65,7 +65,6 @@ public class ScheduleAdapater extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
 
         void bind(Schedule schedule){
-            this.schedule = schedule;
             Date currentDate = new Date();
             Date deadLine = schedule.getDeadLine();
             long t1 = System.currentTimeMillis();

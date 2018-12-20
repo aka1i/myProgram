@@ -23,6 +23,7 @@ import java.util.List;
 public class MailListFragment extends Fragment {
     RecyclerView recyclerView;
     ScheduleAdapater adapater;
+    List<Schedule> schedules;
     public MailListFragment() {
         // Required empty public constructor
     }
@@ -46,9 +47,6 @@ public class MailListFragment extends Fragment {
     }
 
     void init(View v){
-        ScheduleLab scheduleLab = ScheduleLab.get(getContext());
-        List<Schedule> schedules = scheduleLab.getSchedules();
-        adapater = new ScheduleAdapater(getActivity(),schedules);
         recyclerView =  v.findViewById(R.id.schedule_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         recyclerView.setAdapter(adapater);
@@ -56,8 +54,7 @@ public class MailListFragment extends Fragment {
     }
 
     void update(){
-        ScheduleLab scheduleLab = ScheduleLab.get(getActivity());
-        List<Schedule> schedules = scheduleLab.getSchedules();
+        schedules = ScheduleLab.get(getContext()).getSchedules();
 
         if (adapater == null) {
             adapater = new ScheduleAdapater(getContext(),schedules);

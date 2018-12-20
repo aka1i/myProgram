@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
-    private static String[] titleText = new String[]{"MeChat", "通讯录", "发现", "我"};
+    private static String[] titleText = new String[]{"MeChat", "事件簿", "发现", "我"};
     private static int[] incons = new int[]{R.drawable.weixin, R.drawable.tongxunlu, R.drawable.faxian, R.drawable.wo};
     private static ArrayList<ImageView> tabImageViews = new ArrayList<>();
     private static ArrayList<TextView> tabTextViews = new ArrayList<>();
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+       // getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_main);
         init();
     }

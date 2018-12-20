@@ -4,14 +4,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class SQLiteDbHelp extends SQLiteOpenHelper {
+public class ScheduleDbHelp extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "saved_schedule.db";
     private static final int DATABASE_VERSION = 1;
 
 
 
 
-    public SQLiteDbHelp(Context context) {
+    public ScheduleDbHelp(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

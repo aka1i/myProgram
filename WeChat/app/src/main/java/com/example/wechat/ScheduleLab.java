@@ -6,17 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.wechat.Dao.SQLiteDbHelp;
+import com.example.wechat.Dao.ScheduleDbHelp;
 import com.example.wechat.Dao.ScheduleCursorWrapper;
-import com.example.wechat.Dao.ScheduleDbSchema;
 import com.example.wechat.Dao.ScheduleDbSchema.ScheduleTable;
 import com.example.wechat.bean.Schedule;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +23,7 @@ public class ScheduleLab {
 
     public ScheduleLab(Context context){
         mcontext = context.getApplicationContext();
-        database = new SQLiteDbHelp(context).getWritableDatabase();
+        database = new ScheduleDbHelp(context).getWritableDatabase();
     }
     public static ScheduleLab get(Context context){
         if (scheduleLab == null){
