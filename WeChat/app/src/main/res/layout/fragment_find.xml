@@ -17,8 +17,8 @@
 
         <TextView
             android:id="@+id/pengyouquan_textview"
-            android:drawableLeft="@drawable/pengyouquan"
-            android:text="朋友圈"
+            android:drawableLeft="@drawable/dutbin_note"
+            android:text="笔记垃圾箱"
             android:textSize="16dp"
             android:layout_margin="5dp"
             android:drawablePadding="10dp"
@@ -31,8 +31,8 @@
             android:alpha="0.4"
             android:background="@color/fengexian" />
         <TextView
-            android:drawableLeft="@drawable/xiangce"
-            android:text="相册"
+            android:drawableLeft="@drawable/overtime_schedul"
+            android:text="历史事件"
             android:textSize="16dp"
             android:layout_margin="5dp"
             android:drawablePadding="10dp"

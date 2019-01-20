@@ -7,13 +7,27 @@
     tools:context=".MeChatFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/note_list"
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/note_search_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="15"
+            android:drawableLeft="@drawable/search"
+            android:hint="最多15个字符"
+            android:drawablePadding="5dp"/>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/note_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.LinearLayoutCompat>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fad_create_diary"
         android:layout_width="wrap_content"

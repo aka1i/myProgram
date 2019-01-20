@@ -5,7 +5,6 @@ import android.database.CursorWrapper;
 
 import com.example.wechat.Dao.NoteDbSchema.NoteTable;
 import com.example.wechat.bean.Note;
-import com.example.wechat.bean.Schedule;
 
 import java.util.Date;
 import java.util.UUID;
@@ -20,7 +19,9 @@ public class NoteCursorWrapper extends CursorWrapper {
         String title = getString(getColumnIndex(NoteTable.Cols.TITLE));
         long date  = getLong(getColumnIndex(NoteTable.Cols.DATE));
         String detail = getString(getColumnIndex(NoteTable.Cols.DETAIL));
-        Note note= new Note(UUID.fromString(uuidString),title,detail,new Date(date));
+        String detailHtmlString = getString(getColumnIndex(NoteTable.Cols.DETAILHEMLSTRING));
+        int deleted = getInt(getColumnIndex(NoteTable.Cols.ISDELETED));
+        Note note= new Note(UUID.fromString(uuidString),title,detail,new Date(date),detailHtmlString, deleted);
         return  note;
     }
 }

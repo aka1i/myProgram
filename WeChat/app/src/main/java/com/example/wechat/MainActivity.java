@@ -15,12 +15,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.wechat.adapter.MyFragmentPagerAdapter;
 import com.example.wechat.bean.Schedule;
+import com.example.wechat.bean.ScheduleLab;
 
 import java.util.ArrayList;
 import java.util.Date;

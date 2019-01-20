@@ -5,15 +5,12 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.transition.Explode;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 
 /**
@@ -51,7 +48,7 @@ public class FindFragment extends Fragment {
                 getActivity(). getWindow().setAllowEnterTransitionOverlap(true);
                 getActivity(). getWindow().setAllowReturnTransitionOverlap(true);
 
-                Intent intent = new Intent(getContext(), PengyouquanActivity.class);
+                Intent intent = new Intent(getContext(), NoteDustbinActivity.class);
                 ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(getActivity());
                 startActivity(intent,transitionActivityOptions.toBundle());
             }

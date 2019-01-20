@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.wechat.DiaryEditorActivity;
 import com.example.wechat.R;
 import com.example.wechat.bean.Note;
 
@@ -20,7 +22,7 @@ import java.util.List;
 public class NoteAdapater extends RecyclerView.Adapter {
     private List<Note> notes;
     private Context context;
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public NoteAdapater(Context context, List<Note> notes) {
         this.notes = notes;
         this.context = context;
@@ -63,12 +65,16 @@ public class NoteAdapater extends RecyclerView.Adapter {
             Date changeTime = note.getChangetime();
             this.note = note;
             noteTitle.setText(note.getTitle());
-            noteDetail.setText(note.getDetail());
+            String detail = note.getDetail();
+            if (detail.length() > 50)
+                detail = detail.substring(0,50) + "。。。";
+            noteDetail.setText(detail);
             noteChangeTime.setText("最后修改于：" + dateFormat.format(changeTime));
         }
         @Override
         public void onClick(View v) {
-
+            Intent intent = new DiaryEditorActivity().newIntent(context,note.getUuid(),note.isDeleted());
+            context.startActivity(intent);
         }
     }
 }

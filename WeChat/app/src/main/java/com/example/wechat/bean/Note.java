@@ -9,12 +9,15 @@ public class Note implements Serializable {
     private Date changetime;
     private String detail;
     private UUID uuid;
-
-    public Note( UUID uuid, String title, String detail,Date changetime) {
+    private String detailHtmlString;
+    private int deleted;
+    public Note(UUID uuid, String title, String detail, Date changetime, String detailHtmlString, int deleted) {
         this.title = title;
         this.changetime = changetime;
         this.detail = detail;
         this.uuid = uuid;
+        this.detailHtmlString = detailHtmlString;
+        this.deleted = deleted;
     }
 
     public Note()
@@ -51,5 +54,21 @@ public class Note implements Serializable {
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public String getDetailHtmlString() {
+        return detailHtmlString;
+    }
+
+    public void setDetailHtmlString(String htmlString) {
+        this.detailHtmlString = htmlString;
+    }
+
+    public int isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
     }
 }
