@@ -12,6 +12,7 @@ import com.example.wechat.Dao.NoteDbSchema;
 import com.example.wechat.Dao.NoteDbSchema.DeletedNoteTable;
 import com.example.wechat.Dao.NoteDbSchema.NoteTable;
 import com.example.wechat.Dao.ScheduleDbSchema;
+import com.example.wechat.Utils.OnlineUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,9 +26,13 @@ public class NoteLab {
     private List<Note> deletedNotes;
     private SQLiteDatabase database;
     private Context mcontext;
-    private NoteComparor mNoteComparor;
+    public static Comparator<Note> mNoteComparor = new LowerNoteComparorBychangetime();
+    final public static int LOWER_NOTECOMPAROR_BY_CHANGETIME = 0;
+    final public static int UPPERR_NOTECOMPAROR_BY_CHANGETIME = 1;
+    final public static int LOWER__NOTECOMPAROR_BY_TEXTLENTH = 2;
+    final public static int UPPER__NOTECOMPAROR_BY_TEXTLENTH = 3;
+    public static int COMFLAG = 0;
     public NoteLab(Context context){
-        mNoteComparor = new NoteComparor();
         mcontext = context.getApplicationContext();
         database = new NoteDbHelp(context).getWritableDatabase();
     }
@@ -104,25 +109,30 @@ public class NoteLab {
     public  void add(Note note){
         ContentValues contentValues = getContentValues(note);
         database.insert(NoteTable.NAME,null,contentValues);
+        OnlineUtils.addNote(note);
     }
 
     public void deleteNote(Note note){
         note.setDeleted(1);
         addDeleted(note);
         database.delete(NoteTable.NAME,NoteTable.Cols.UUID + " = ? ",new String[] {note.getUuid().toString()});
+        OnlineUtils.deleteNote(note);
     }
 
     public void updateNote(Note note){
         String uuidString = note.getUuid().toString();
         ContentValues values = getContentValues(note);
         database.update(NoteTable.NAME,values,NoteTable.Cols.UUID + " = ? ", new String[]{uuidString});
+        OnlineUtils.queryAndUpdateNotebyUUID(note);
     }
 
     public NoteCursorWrapper queryNote(String whereClause, String[] whereArgs){
         Cursor cursor = database.query(NoteTable.NAME,null,whereClause,whereArgs,null,null,null);
         return new NoteCursorWrapper(cursor);
     }
-
+    public void destoryTable(){
+        database.delete(NoteTable.NAME,null,null);
+    }
 
     /**
      * 已删除note的增删改查
@@ -134,18 +144,21 @@ public class NoteLab {
 
     public void realDeleteNote(Note note){
         database.delete(DeletedNoteTable.NAME,NoteTable.Cols.UUID + " = ? ",new String[] {note.getUuid().toString()});
+        OnlineUtils.realDeleteNote(note);
     }
 
     public void cancleDeleted(Note note){
         note.setDeleted(0);
         realDeleteNote(note);
         add(note);
+        OnlineUtils.cancleDeletedNote(note);
     }
 
     public void updateDeletedNote(Note note){
         String uuidString = note.getUuid().toString();
         ContentValues values = getContentValues(note);
         database.update(DeletedNoteTable.NAME,values,NoteTable.Cols.UUID + " = ? ", new String[]{uuidString});
+        OnlineUtils.queryAndUpdateNotebyUUID(note);
     }
 
     public NoteCursorWrapper queryDeletedNote(String whereClause, String[] whereArgs){
@@ -155,6 +168,7 @@ public class NoteLab {
 
     public void clearAll(){
         database.delete(DeletedNoteTable.NAME,null,null);
+        OnlineUtils.deleteAllDeletedNote();
     }
 
 
@@ -171,10 +185,50 @@ public class NoteLab {
         return values;
     }
 
-    private  class NoteComparor implements Comparator<Note>{
+    public static void setComparator(int flag){
+        switch (flag){
+            case LOWER_NOTECOMPAROR_BY_CHANGETIME:{
+                mNoteComparor = new LowerNoteComparorBychangetime();
+                break;
+            }
+            case UPPERR_NOTECOMPAROR_BY_CHANGETIME:{
+                mNoteComparor = new UpperNoteComparorBychangetime();
+                break;
+            }
+            case LOWER__NOTECOMPAROR_BY_TEXTLENTH:{
+                mNoteComparor = new LowerNoteComparorByTextlenth();
+                break;
+            }
+            case UPPER__NOTECOMPAROR_BY_TEXTLENTH:{
+                mNoteComparor = new UpperNoteComparorByTextlenth();
+                break;
+            }
+        }
+
+    }
+
+    public  static class LowerNoteComparorBychangetime implements Comparator<Note>{
         @Override
         public int compare(Note n1, Note n2) {
             return n1.getChangetime().getTime() < n2.getChangetime().getTime() ? 1 : -1;
+        }
+    }
+    private static class UpperNoteComparorBychangetime implements Comparator<Note>{
+        @Override
+        public int compare(Note n1, Note n2) {
+            return n1.getChangetime().getTime() > n2.getChangetime().getTime() ? 1 : -1;
+        }
+    }
+    private  static class LowerNoteComparorByTextlenth implements Comparator<Note>{
+        @Override
+        public int compare(Note n1, Note n2) {
+            return n1.getDetail().length() > n2.getDetail().length() ? 1 : -1;
+        }
+    }
+    private  static class UpperNoteComparorByTextlenth implements Comparator<Note>{
+        @Override
+        public int compare(Note n1, Note n2) {
+            return n1.getDetail().length() < n2.getDetail().length() ? 1 : -1;
         }
     }
 }

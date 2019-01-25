@@ -1,14 +1,16 @@
 package com.example.wechat;
 
 import android.animation.ArgbEvaluator;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +19,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.SaveCallback;
+import com.example.wechat.Utils.OnlineUtils;
 import com.example.wechat.adapter.MyFragmentPagerAdapter;
+import com.example.wechat.bean.Note;
+import com.example.wechat.bean.NoteLab;
 import com.example.wechat.bean.Schedule;
 import com.example.wechat.bean.ScheduleLab;
 
@@ -29,8 +38,8 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity {
     private static String[] titleText = new String[]{"MeChat", "事件簿", "发现", "我"};
     private static int[] incons = new int[]{R.drawable.weixin, R.drawable.tongxunlu, R.drawable.faxian, R.drawable.wo};
-    private static ArrayList<ImageView> tabImageViews = new ArrayList<>();
-    private static ArrayList<TextView> tabTextViews = new ArrayList<>();
+    private ArrayList<ImageView> tabImageViews = new ArrayList<>();
+    private ArrayList<TextView> tabTextViews = new ArrayList<>();
     private Fragment[] fragments = FragmentCreater.getFragments();
     private TabLayout tabLayout;
     private MyFragmentPagerAdapter adapter;
@@ -47,6 +56,25 @@ public class MainActivity extends AppCompatActivity {
        // getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_main);
         init();
+        new OnlineUtils(getApplicationContext());
+//        AVObject testObject = new AVObject("TestObject");
+//        testObject.put("words","Hello World!");
+//        testObject.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(AVException e) {
+//                if(e == null){
+//                    Log.d("saved","success!");
+//                }
+//            }
+//        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
     }
 
     private void init() {
@@ -74,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
                         changeTabColor(i);
                     }
                 },100);
-
-
             }
 
             @Override
@@ -84,26 +110,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         //初始化底部导航
         initTab();
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.create_schedule:{
-                        Schedule schedule = new Schedule(UUID.randomUUID(),"","",new Date());
-                        ScheduleLab.get(getApplicationContext()).add(schedule);
-                        Intent intent = ScheduleActivity.newIntent(getApplication(), schedule.getUuid());
-                        startActivity(intent);
-                    }
-                    case R.id.menu3:{
-
-                    }
-                }
-                return false;
-            }
-        });
     }
 
     private void initTab() {
@@ -119,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
             tabTextViews.add(textView);
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             tab.setCustomView(v);
-
         }
     }
 
@@ -144,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
         int selectedcolor = (int) argbEvaluator.evaluate(positionOffset, tabUnsSelectedColor, tabSelectedColor);
         imageViewFrom = tabImageViews.get(position);
         textViewFrom = tabTextViews.get(position);
-        Log.d("position111", String.valueOf(position));
         if(position != tabImageViews.size() - 1){
             imageViewTo = tabImageViews.get((position + 1));
             textViewTo = tabTextViews.get((position + 1));
@@ -174,5 +182,55 @@ public class MainActivity extends AppCompatActivity {
        getMenuInflater().inflate(R.menu.option,menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.create_schedule:{
+                Schedule schedule = new Schedule(UUID.randomUUID(),"","",new Date());
+                ScheduleLab.get(getApplicationContext()).add(schedule);
+                Intent intent = ScheduleActivity.newIntent(getApplication(), schedule.getUuid());
+                startActivity(intent);
+                break;
+            }
+            case R.id.main_refresh:{
+                OnlineUtils.synchronizeToNet();
+                OnlineUtils.synchronizeFromNet();
+                Toast.makeText(getApplicationContext(),"完成同步",Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.main_sort:{
+                final String items[] = {"按照修改日期降序", "按照修改日期升序", "按照文本内容长度升序", "按照文本内容长度降序"};
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("选择笔记的排序方式")//设置对话框的标题
+                        .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                NoteLab.COMFLAG = which;
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                NoteLab.COMFLAG = 0;
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                NoteLab.setComparator(NoteLab.COMFLAG);
+                                NoteLab.COMFLAG = 0;
+                                MeChatFragment.updateWithoutData();
+                                dialog.dismiss();
+                            }
+                        }).create();
+                dialog.show();
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
 

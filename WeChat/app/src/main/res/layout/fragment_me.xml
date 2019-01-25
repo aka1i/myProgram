@@ -14,13 +14,13 @@
         android:background="@drawable/bizhi">
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
+            android:id="@+id/me_touxiang"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="-32dp"
-            android:src="@drawable/profile"
+            android:src="@drawable/ac3"
             app:civ_border_color="#ff000000"
             app:civ_border_width="2dp" />
 

@@ -16,6 +16,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    //leanclod
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -31,4 +39,16 @@ dependencies {
     implementation 'com.juniperphoton:flipperlayout:1.2.1'
     implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'org.ccil.cowan.tagsoup:tagsoup:1.2'
+
+    // LeanCloud 基础包
+    implementation('cn.leancloud.android:avoscloud-sdk:4.7.9')
+
+    // 推送与即时通讯需要的包
+    implementation('cn.leancloud.android:avoscloud-push:4.7.9@aar') { transitive = true }
+
+    // LeanCloud 用户反馈包
+    implementation('cn.leancloud.android:avoscloud-feedback:4.7.9@aar')
+
+    // LeanCloud 应用内搜索包
+    implementation('cn.leancloud.android:avoscloud-search:4.7.9@aar')
 }

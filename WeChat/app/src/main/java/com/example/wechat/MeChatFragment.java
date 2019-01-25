@@ -1,6 +1,7 @@
 package com.example.wechat;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,12 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.wechat.adapter.NoteAdapater;
 import com.example.wechat.bean.Note;
 import com.example.wechat.bean.NoteLab;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -31,11 +34,13 @@ import java.util.UUID;
 public class MeChatFragment extends Fragment {
 
     private FloatingActionButton floatingActionButton;
-    private  RecyclerView recyclerView;
-    private List<Note> notes;
-    private List<Note> searchNotes;
-    private  NoteAdapater adapater;
+    private RecyclerView recyclerView;
+    private static List<Note> notes;
+    private static List<Note> searchNotes;
+    private static NoteAdapater adapater;
+    private static Context mContext;
     private EditText mNoteSearchText;
+    private static boolean IS_SEARCHING = false;
     public MeChatFragment() {
         // Required empty public constructor
     }
@@ -52,11 +57,11 @@ public class MeChatFragment extends Fragment {
         return v;
     }
     private void init(View v){
+        mContext = getContext();
         mNoteSearchText = v.findViewById(R.id.note_search_text);
         mNoteSearchText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -66,13 +71,17 @@ public class MeChatFragment extends Fragment {
                 else
                     searchNotes.clear();
                 if (s.length() != 0) {
+                    IS_SEARCHING = true;
                     for (Note note : notes) {
                         if (note.getTitle().contains(s) || note.getDetail().contains(s))
                             searchNotes.add(note);
                     }
                 }
-                else
+                else{
+                    IS_SEARCHING = false;
                     searchNotes.addAll(notes);
+                }
+
                 adapater.setNotes(searchNotes);
                 adapater.notifyDataSetChanged();
             }
@@ -82,6 +91,8 @@ public class MeChatFragment extends Fragment {
 
             }
         });
+
+
         recyclerView = v.findViewById(R.id.note_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         floatingActionButton = v.findViewById(R.id.fad_create_diary);
@@ -108,6 +119,18 @@ public class MeChatFragment extends Fragment {
             adapater = new NoteAdapater(getContext(),notes);
         recyclerView.setAdapter(adapater);
         adapater.setNotes(notes);
+        adapater.notifyDataSetChanged();
+    }
+    public static void updateWithoutData(){
+        if (!IS_SEARCHING){
+            notes = NoteLab.get(mContext).getNotes();
+            Collections.sort(notes,NoteLab.mNoteComparor);
+            adapater.setNotes(notes);
+        }
+        else {
+            Collections.sort(searchNotes,NoteLab.mNoteComparor);
+            adapater.setNotes(searchNotes);
+        }
         adapater.notifyDataSetChanged();
     }
 }

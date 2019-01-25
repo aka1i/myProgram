@@ -3,6 +3,7 @@ package com.example.wechat;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -31,7 +32,7 @@ public class MeFragment extends Fragment {
     private static int[] acs = new int[]{R.drawable.ac1,R.drawable.ac2,R.drawable.ac3,R.drawable.ac4};
     int clickCount = 0;
     CircleImageView circleImageView;
-
+    CircleImageView mTouxiang;
     Timer timer;
     TimerTask timerTask;
     Handler mHandler;
@@ -54,7 +55,19 @@ public class MeFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_me, container, false);
+
+
+        init(v);
+        return v;
+    }
+
+    private void init(View v){
         circleImageView = v.findViewById(R.id.ac1);
+        mTouxiang = v.findViewById(R.id.me_touxiang);
+
+        /**
+         * 旋转
+         */
         mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
@@ -68,7 +81,7 @@ public class MeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (clickCount <= 30)
-                clickCount++;
+                    clickCount++;
                 stopTask();
                 startTask();
                 switch (clickCount){
@@ -80,8 +93,15 @@ public class MeFragment extends Fragment {
             }
         });
 
-
-        return v;
+        mTouxiang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = RegisterActivity.newIntent(getContext());
+//                getContext().startActivity(intent);
+                Intent intent = new Intent(getContext(),PersonCenterActivity.class);
+                getContext().startActivity(intent);
+            }
+        });
     }
 
     private void rotation(){
