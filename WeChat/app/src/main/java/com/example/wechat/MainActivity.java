@@ -188,10 +188,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()){
             case R.id.create_schedule:{
-                Schedule schedule = new Schedule(UUID.randomUUID(),"","",new Date());
-                ScheduleLab.get(getApplicationContext()).add(schedule);
-                Intent intent = ScheduleActivity.newIntent(getApplication(), schedule.getUuid());
-                startActivity(intent);
+                Toast.makeText(getApplicationContext(),"施工中(#^.^#)",Toast.LENGTH_SHORT).show();
+//                Schedule schedule = new Schedule(UUID.randomUUID(),"","",new Date());
+//                ScheduleLab.get(getApplicationContext()).add(schedule);
+//                Intent intent = ScheduleActivity.newIntent(getApplication(), schedule.getUuid());
+//                startActivity(intent);
                 break;
             }
             case R.id.main_refresh:{
