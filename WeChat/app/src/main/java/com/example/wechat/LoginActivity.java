@@ -12,12 +12,14 @@ import android.widget.Toast;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
+import com.avos.avoscloud.RequestPasswordResetCallback;
 import com.example.wechat.Utils.OnlineUtils;
 
 public class LoginActivity extends AppCompatActivity {
     Button mLoginButton;
     EditText mUserName;
     EditText mPassword;
+    Button mResetButton;
     String mUserNameText;
     String mPasswordText;
     @Override
@@ -28,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void init(){
+        mResetButton = findViewById(R.id.reset_password);
         mLoginButton = findViewById(R.id.login);
         mUserName = findViewById(R.id.login_username);
         mPassword = findViewById(R.id.login_password);
@@ -39,6 +42,13 @@ public class LoginActivity extends AppCompatActivity {
                 login(mUserNameText,mPasswordText);
             }
         });
+        mResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetPassword(mUserName.getText().toString());
+            }
+        });
+
     }
 
     private void login(String username,String password){
@@ -52,6 +62,19 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {
                     Toast.makeText(LoginActivity.this, "登入失败（可能账户名或密码错误）", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void resetPassword(String emai){
+        AVUser.requestPasswordResetInBackground(emai, new RequestPasswordResetCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    Toast.makeText(getApplicationContext(),"验证成功，请前往邮箱修改密码",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(),"重置失败（验证邮箱可能有误)",Toast.LENGTH_SHORT).show();
                 }
             }
         });

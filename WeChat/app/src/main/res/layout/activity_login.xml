@@ -40,4 +40,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="登入"/>
+    <Button
+        android:id="@+id/reset_password"
+        android:layout_marginTop="11dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="重置密码(在用户名输入验证邮箱即可)"/>
 </LinearLayout>

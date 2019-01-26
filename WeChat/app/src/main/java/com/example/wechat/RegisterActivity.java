@@ -24,6 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText checkPassword;
     EditText phoneNumber;
     EditText yanzhengma;
+    EditText email;
     Button getyanzhengma;
     Button regisetButton;
     TextInputLayout passwordLayout;
@@ -32,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     String phoneNumberText = "";
     String passwordText = "";
     String checkPasswordText = "";
+    String emailText = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void init(){
         username = findViewById(R.id.username);
         phoneNumber = findViewById(R.id.phoneNumber);
+        email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         checkPassword = findViewById(R.id.checkPassword);
         yanzhengma = findViewById(R.id.yanzhengma);
@@ -63,6 +66,25 @@ public class RegisterActivity extends AppCompatActivity {
                 if (phoneNumber.length() != 11)
                     phoneNumber.setError("手机号输入有误");
 
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                emailText = String.valueOf(s);
+                if (!emailText.matches("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"))
+                    email.setError("邮箱有误");
             }
 
             @Override
@@ -124,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 usernameText = username.getText().toString();
                 if(phoneNumberText.length() == 11 && passwordText.length() >= 6 && passwordText.equals(checkPasswordText)){
-                    register(usernameText,passwordText);
+                    register(usernameText,passwordText,emailText);
                 }else {
                     Toast.makeText(RegisterActivity.this,"手机号或密码错误",Toast.LENGTH_SHORT).show();
                 }
@@ -154,10 +176,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         return intent;
     }
-    private void register(String username,String password){
+    private void register(String username,String password,String emailText){
         AVUser user = new AVUser();// 新建 AVUser 对象实例
         user.setUsername(username);// 设置用户名
         user.setPassword(password);// 设置密码
+        user.setEmail(emailText);
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(AVException e) {
