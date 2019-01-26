@@ -31,6 +31,7 @@ public class OnlineUtils {
         STATE = 0;
         NoteLab noteLab = NoteLab.get(mContext);
         ArrayList<AVObject> notes = new ArrayList<AVObject> ();
+
         for (Note note : noteLab.getNotes()){
             queryAndUpdateNotebyUUID(note);
         }
@@ -62,6 +63,7 @@ public class OnlineUtils {
                 }
                 STATE = 0;
                 MeChatFragment.updateWithoutData();
+                Toast.makeText(mContext,"完成同步",Toast.LENGTH_SHORT).show();
             }
         });
     }

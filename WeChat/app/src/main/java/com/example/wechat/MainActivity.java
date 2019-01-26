@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
 
-
+    private CountDownTimer countDownTimer;
     private ArgbEvaluator argbEvaluator = new ArgbEvaluator();
     private static final int tabSelectedColor = Color.parseColor("#FF4500");
     private static final int tabUnsSelectedColor = Color.parseColor("#000000");
@@ -184,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()){
             case R.id.create_schedule:{
                 Schedule schedule = new Schedule(UUID.randomUUID(),"","",new Date());
@@ -194,9 +195,21 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case R.id.main_refresh:{
+                Toast.makeText(getApplicationContext(),"开始同步，30s后可再次同步",Toast.LENGTH_SHORT).show();
+                countDownTimer = new CountDownTimer(30 * 1000,30 * 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        item.setEnabled(false);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        item.setEnabled(true);
+                    }
+                };
+                countDownTimer.start();
                 OnlineUtils.synchronizeToNet();
                 OnlineUtils.synchronizeFromNet();
-                Toast.makeText(getApplicationContext(),"完成同步",Toast.LENGTH_SHORT).show();
                 break;
             }
             case R.id.main_sort:{
@@ -232,5 +245,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer!=null)
+            countDownTimer.cancel();
+    }
 }
 
