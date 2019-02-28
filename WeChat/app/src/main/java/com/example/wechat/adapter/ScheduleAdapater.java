@@ -2,6 +2,7 @@ package com.example.wechat.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,11 +12,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.wechat.R;
-import com.example.wechat.ScheduleActivity;
+import com.example.wechat.Schedule.ScheduleActivity;
 import com.example.wechat.bean.Schedule;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -69,12 +69,25 @@ public class ScheduleAdapater extends RecyclerView.Adapter<RecyclerView.ViewHold
             Date deadLine = schedule.getDeadLine();
             long t1 = System.currentTimeMillis();
             long t2 = deadLine.getTime();
-            int remainTime =  (int)((t2 - t1) / (60 * 60 * 24 * 1000));
+            int remainTime =  (int)((t2 - t1) / (60  * 1000));
             this.schedule = schedule;
             scheduleTitle.setText(schedule.getTitle());
             scheduleDetail.setText(schedule.getDetail());
             scheduleDeadLine.setText(dateFormat.format(deadLine));
-            scheduleRemainTime.setText("还剩下" + String.valueOf(remainTime) + "天");
+            if(remainTime < 0)
+                scheduleRemainTime.setTextColor(Color.BLACK);
+            if (remainTime / 60  >= 24)
+                scheduleRemainTime.setText("还剩下" + String.valueOf(remainTime / (24 * 60)) + "天");
+            else if (remainTime / 60 > 0 && remainTime / 60 <= 23)
+                scheduleRemainTime.setText("还剩下" + String.valueOf(remainTime /  60) + "小时");
+            else if (remainTime >= 0 && remainTime < 60)
+                scheduleRemainTime.setText("还剩下" + String.valueOf(remainTime) + "分钟");
+            else if (remainTime > -60 && remainTime < 0)
+                scheduleRemainTime.setText("过去" + String.valueOf(Math.abs(remainTime)) + "分钟");
+            else if (remainTime / 60 > -23 && remainTime / 60 < 0)
+                scheduleRemainTime.setText("过去" + String.valueOf(Math.abs(remainTime) / 60) + "小时");
+            else if (remainTime / 60 <= -24)
+                scheduleRemainTime.setText("过去" + String.valueOf(Math.abs(remainTime) / (24 * 60)) + "天");
         }
         @Override
         public void onClick(View v) {

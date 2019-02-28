@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFAF0"
-    tools:context=".ScheduleActivity">
+    tools:context=".Schedule.ScheduleActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,6 +45,58 @@
             android:gravity="top"
             android:padding="10dp"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginTop="30dp"
+            android:layout_weight=".5"
+            android:gravity="center">
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                android:background="@android:color/transparent"
+                android:padding="8dp"
+                android:src="@drawable/alert" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="start"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="设置提醒"
+                android:textSize="16sp" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/reminder_switch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="8dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/scheduleDateTimeReminderTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="14sp" />
+        <Button
+            android:id="@+id/set_schedule_time_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="设置时间"/>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

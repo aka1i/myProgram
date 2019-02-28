@@ -2,7 +2,6 @@ package com.example.wechat;
 
 import android.animation.ArgbEvaluator;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -13,7 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,19 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.SaveCallback;
+import com.example.wechat.Note.MeChatFragment;
 import com.example.wechat.Utils.OnlineUtils;
 import com.example.wechat.adapter.MyFragmentPagerAdapter;
-import com.example.wechat.bean.Note;
 import com.example.wechat.bean.NoteLab;
-import com.example.wechat.bean.Schedule;
-import com.example.wechat.bean.ScheduleLab;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     private static String[] titleText = new String[]{"MeChat", "事件簿", "发现", "我"};

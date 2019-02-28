@@ -2,6 +2,10 @@ package com.example.wechat;
 
 import android.support.v4.app.Fragment;
 
+import com.example.wechat.Note.MeChatFragment;
+import com.example.wechat.Schedule.MailListFragment;
+import com.example.wechat.User.MeFragment;
+
 public class FragmentCreater {
     public static Fragment[] getFragments(){
         Fragment fragments[] = new Fragment[4];

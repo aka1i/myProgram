@@ -8,11 +8,8 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
-import com.avos.avoscloud.GetCallback;
-import com.avos.avoscloud.SaveCallback;
-import com.example.wechat.MeChatFragment;
+import com.example.wechat.Note.MeChatFragment;
 import com.example.wechat.bean.Note;
 import com.example.wechat.bean.NoteLab;
 
@@ -21,6 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class OnlineUtils {
+    private static final String TAG = "OnlineUtils";
+
     private static Context mContext;
     private static AVObject avObject = null;
     private static int STATE = 0; //0表示上传，1表示下载
@@ -31,13 +30,17 @@ public class OnlineUtils {
         STATE = 0;
         NoteLab noteLab = NoteLab.get(mContext);
         ArrayList<AVObject> notes = new ArrayList<AVObject> ();
+        Log.d(TAG,"开始上传");
+        for (Note note : noteLab.getmNotes()){
+            queryAndUpdateNotebyUUID(note);
+            Log.d(TAG,"上传笔记");
+        }
+        for (Note note : noteLab.getmDeletedNotes()){
+            queryAndUpdateNotebyUUID(note);
+            Log.d(TAG,"上传笔记");
+        }
+        Log.d(TAG,"结束上传");
 
-        for (Note note : noteLab.getNotes()){
-            queryAndUpdateNotebyUUID(note);
-        }
-        for (Note note : noteLab.getDeletedNotes()){
-            queryAndUpdateNotebyUUID(note);
-        }
     }
     public static void synchronizeFromNet(){
         if (AVUser.getCurrentUser() == null)
@@ -49,21 +52,23 @@ public class OnlineUtils {
 
         final NoteLab noteLab =  NoteLab.get(mContext);
         noteLab.destoryTable();
-        noteLab.clearAll();
-
+        Log.d(TAG,"数据清除完成");
         query.findInBackground(new FindCallback<AVObject>() {
             @Override
             public void done(List<AVObject> avObjects, AVException avException) {
+                Log.d(TAG,"开始下载：" + avObjects.size() + "个笔记");
                 for (AVObject avObject : avObjects){
                     Note note = tranAVToNote(avObject);
                     if (note.isDeleted() == 0)
                         noteLab.add(note);
                     else
                         noteLab.addDeleted(note);
+                    Log.d(TAG,"下载笔记");
                 }
                 STATE = 0;
                 MeChatFragment.updateWithoutData();
                 Toast.makeText(mContext,"完成同步",Toast.LENGTH_SHORT).show();
+                Log.d(TAG,"结束下载");
             }
         });
     }

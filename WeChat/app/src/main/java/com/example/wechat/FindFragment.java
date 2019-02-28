@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.wechat.Note.NoteDustbinActivity;
+
 
 /**
  * A simple {@link Fragment} subclass.

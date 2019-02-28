@@ -11,24 +11,26 @@ import com.example.wechat.Dao.ScheduleCursorWrapper;
 import com.example.wechat.Dao.ScheduleDbSchema.ScheduleTable;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
 public class ScheduleLab {
-    private static ScheduleLab scheduleLab;
-    private static List<Schedule> schedules;
-    private SQLiteDatabase database;
-    private Context mcontext;
+    private static ScheduleLab sScheduleLab;
+    private static List<Schedule> sSchedules;
+    private SQLiteDatabase mDatabase;
+    private Context mContext;
 
     public ScheduleLab(Context context){
-        mcontext = context.getApplicationContext();
-        database = new ScheduleDbHelp(context).getWritableDatabase();
+        mContext = context.getApplicationContext();
+        mDatabase = new ScheduleDbHelp(context).getWritableDatabase();
     }
     public static ScheduleLab get(Context context){
-        if (scheduleLab == null){
-            scheduleLab = new ScheduleLab(context);
+        if (sScheduleLab == null){
+            sScheduleLab = new ScheduleLab(context);
         }
-        return scheduleLab;
+        return sScheduleLab;
     }
 
     public   List<Schedule> getSchedules() {
@@ -43,7 +45,13 @@ public class ScheduleLab {
         }finally {
             scheduleCursorWrapper.close();
         }
-        this.schedules = schedules;
+        this.sSchedules = schedules;
+        Collections.sort(schedules,new Comparator<Schedule>() {
+            @Override
+            public int compare(Schedule o1, Schedule o2) {
+                return (int)(o2.getDeadLine().getTime() / 1000 - o1.getDeadLine().getTime() / 1000);
+            }
+        });
         return schedules;
     }
 
@@ -62,22 +70,22 @@ public class ScheduleLab {
 
     public  void add(Schedule schedule){
         ContentValues contentValues = getContentValues(schedule);
-        database.insert(ScheduleTable.NAME,null,contentValues);
+        mDatabase.insert(ScheduleTable.NAME,null,contentValues);
     }
 
     public void deleteCrime(Schedule schedule){
-        database.delete(ScheduleTable.NAME,ScheduleTable.Cols.UUID + " = ? ",new String[] {schedule.getUuid().toString()});
+        mDatabase.delete(ScheduleTable.NAME,ScheduleTable.Cols.UUID + " = ? ",new String[] {schedule.getUuid().toString()});
     }
 
     public void updateCrime(Schedule schedule){
         String uuidString = schedule.getUuid().toString();
         ContentValues values = getContentValues(schedule);
         Log.d("Dasdsa",String.valueOf(schedule.getTitle()));
-        database.update(ScheduleTable.NAME,values,ScheduleTable.Cols.UUID + " = ? ", new String[]{uuidString});
+        mDatabase.update(ScheduleTable.NAME,values,ScheduleTable.Cols.UUID + " = ? ", new String[]{uuidString});
     }
 
     public ScheduleCursorWrapper querySchedule(String whereClause, String[] whereArgs){
-        Cursor cursor = database.query(ScheduleTable.NAME,null,whereClause,whereArgs,null,null,null);
+        Cursor cursor = mDatabase.query(ScheduleTable.NAME,null,whereClause,whereArgs,null,null,null);
         return new ScheduleCursorWrapper(cursor);
     }
     private static ContentValues getContentValues(Schedule schedule){
