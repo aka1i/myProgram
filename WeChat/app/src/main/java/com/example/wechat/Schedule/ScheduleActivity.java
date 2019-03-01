@@ -62,6 +62,8 @@ public class ScheduleActivity extends AppCompatActivity implements OnDateSetList
     private Date oldDeadLine;
     private int hasRemind;
     private int hasSettedRemind;
+    private String oldTitle;
+    private String oldDetail;
     private DateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd HH时mm分");
 
     private static String[] PERMISSIONS_STORAGE = {
@@ -108,6 +110,8 @@ public class ScheduleActivity extends AppCompatActivity implements OnDateSetList
         hasSettedRemind = hasRemind;
         deadLine = schedule.getDeadLine();
         oldDeadLine = schedule.getDeadLine();
+        oldDetail = schedule.getDetail();
+        oldTitle = schedule.getTitle();
 
         Log.d(TAG, String.valueOf(hasRemind));
         String title = schedule.getTitle();
@@ -127,11 +131,11 @@ public class ScheduleActivity extends AppCompatActivity implements OnDateSetList
                 Log.d(TAG,"new " + deadLine.toString());
                 if (hasRemind == 1){
                     if (hasSettedRemind == 1)
-                        CalendarReminderUtils.updateCalendarEvent(getApplicationContext(),schedule.getTitle(),oldDeadLine.getTime(),deadLine.getTime());
+                        CalendarReminderUtils.updateCalendarEvent(getApplicationContext(),oldTitle,scheduleTitle.getText().toString(),scheduleDetail.getText().toString(),oldDeadLine.getTime(),deadLine.getTime());
                     else
-                        CalendarReminderUtils.addCalendarEvent(getApplicationContext(),schedule.getTitle(),schedule.getDetail(),deadLine.getTime(),0);
+                        CalendarReminderUtils.addCalendarEvent(getApplicationContext(),scheduleTitle.getText().toString(),scheduleDetail.getText().toString(),deadLine.getTime(),0);
                 }else {
-                    CalendarReminderUtils.deleteCalendarEvent(getApplicationContext(),schedule.getTitle(),schedule.getDeadLine().getTime());
+                    CalendarReminderUtils.deleteCalendarEvent(getApplicationContext(),oldTitle,oldDeadLine.getTime());
                 }
                 Log.d(TAG,"setmind" + String.valueOf(hasRemind));
                 schedule.setHasRemind(hasRemind);
@@ -212,6 +216,7 @@ public class ScheduleActivity extends AppCompatActivity implements OnDateSetList
         switch (item.getItemId()){
             case R.id.delete:
                 ScheduleLab.get(getApplicationContext()).deleteCrime(schedule);
+                CalendarReminderUtils.deleteCalendarEvent(getApplicationContext(),schedule.getTitle(),oldDeadLine.getTime());
                 finish();
                 return true;
 

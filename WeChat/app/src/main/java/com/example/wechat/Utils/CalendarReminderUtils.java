@@ -100,7 +100,7 @@ public class CalendarReminderUtils {
         return id;
     }
 
-    public static void updateCalendarEvent(Context context, String title,long oldDeadline,long deadline){
+    public static void updateCalendarEvent(Context context,  String oldtitle,String title,String detail,long oldDeadline,long deadline){
         if (context == null) {
             return;
         }
@@ -123,13 +123,16 @@ public class CalendarReminderUtils {
                     String eventTitle = eventCursor.getString(eventCursor.getColumnIndex("title"));
                     long eventStart = eventCursor.getLong(eventCursor.getColumnIndex(CalendarContract.Events.DTSTART));
                     Log.d(TAG,"even: " + title.equals(eventTitle) );
-                    if (title.equals(eventTitle) && oldDeadline == eventStart) {
+                    if (oldtitle.equals(eventTitle) && oldDeadline == eventStart) {
                         Log.d(TAG,"找到" );
                         int id = eventCursor.getInt(eventCursor.getColumnIndex(CalendarContract.Calendars._ID));//取得id
                         Uri updateUri = ContentUris.withAppendedId(CALENDER_EVENT_URL, id);
                         ContentValues event = new ContentValues();
                         event.put(CalendarContract.Events.DTSTART, deadline);
+                        event.put(CalendarContract.Events.TITLE,title);
+                        event.put(CalendarContract.Events.DESCRIPTION,detail);
                         int rows = context.getContentResolver().update(updateUri, event, null,null);
+                        Log.d(TAG,"updateRows: " + rows);
                         if (rows == -1) { //事件删除失败
                             return;
                         }
@@ -162,6 +165,7 @@ public class CalendarReminderUtils {
         mCalendar.setTimeInMillis(start + 10 * 60 * 1000);//设置终止时间，开始时间加10分钟
         long end = mCalendar.getTime().getTime();
         ContentValues event = new ContentValues();
+        Log.d(TAG,description + "  111111");
         event.put("title", title);
         event.put("description", description);
         event.put("calendar_id", calId); //插入账户的id
@@ -170,10 +174,11 @@ public class CalendarReminderUtils {
         event.put(CalendarContract.Events.HAS_ALARM, 1);//设置有闹钟提醒
         event.put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Shanghai");//这个是时区，必须有
         Uri newEvent = context.getContentResolver().insert(CALENDER_EVENT_URL, event); //添加事件
+        Log.d(TAG,description + "  222222");
         if (newEvent == null) { //添加日历事件失败直接返回
             return;
         }
-
+        Log.d(TAG,description + "  3333333");
         //事件提醒的设定
         ContentValues values = new ContentValues();
         values.put(CalendarContract.Reminders.EVENT_ID, ContentUris.parseId(newEvent));
