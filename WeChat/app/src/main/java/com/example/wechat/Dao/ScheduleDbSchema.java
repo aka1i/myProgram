@@ -8,6 +8,7 @@ public class ScheduleDbSchema {
             public static final String TITLE = "title";
             public static final String DETAIL = "detail";
             public static final String DATE = "date";
+            public static final String HAS_REMIND = "has_remind";
         }
 
     }

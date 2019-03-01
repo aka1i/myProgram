@@ -178,32 +178,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()){
-            case R.id.create_schedule:{
-                Toast.makeText(getApplicationContext(),"施工中(#^.^#)",Toast.LENGTH_SHORT).show();
-//                Schedule schedule = new Schedule(UUID.randomUUID(),"","",new Date());
-//                ScheduleLab.get(getApplicationContext()).add(schedule);
-//                Intent intent = ScheduleActivity.newIntent(getApplication(), schedule.getUuid());
-//                startActivity(intent);
-                break;
-            }
-            case R.id.main_refresh:{
-                Toast.makeText(getApplicationContext(),"开始同步，30s后可再次同步",Toast.LENGTH_SHORT).show();
-                countDownTimer = new CountDownTimer(30 * 1000,30 * 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        item.setEnabled(false);
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        item.setEnabled(true);
-                    }
-                };
-                countDownTimer.start();
-                OnlineUtils.synchronizeToNet();
-                OnlineUtils.synchronizeFromNet();
-                break;
-            }
+//            case R.id.main_refresh:{
+//                Toast.makeText(getApplicationContext(),"开始同步，30s后可再次同步",Toast.LENGTH_SHORT).show();
+//                countDownTimer = new CountDownTimer(30 * 1000,30 * 1000) {
+//                    @Override
+//                    public void onTick(long millisUntilFinished) {
+//                        item.setEnabled(false);
+//                    }
+//
+//                    @Override
+//                    public void onFinish() {
+//                        item.setEnabled(true);
+//                    }
+//                };
+//                countDownTimer.start();
+//                OnlineUtils.synchronizeToNet();
+//                OnlineUtils.synchronizeFromNet();
+//                break;
+//            }
             case R.id.main_sort:{
                 final String items[] = {"按照修改日期降序", "按照修改日期升序", "按照文本内容长度升序", "按照文本内容长度降序"};
                 AlertDialog dialog = new AlertDialog.Builder(this)

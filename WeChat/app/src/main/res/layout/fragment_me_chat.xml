@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_gravity="bottom|right"
-        android:src="@drawable/fad_add"
+        android:src="@drawable/fad_add_note"
         app:fabSize="normal"/>
 
 </FrameLayout>

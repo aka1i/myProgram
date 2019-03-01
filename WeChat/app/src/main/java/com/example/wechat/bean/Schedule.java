@@ -9,6 +9,7 @@ public class Schedule implements Serializable {
     private Date deadLine;
     private String detail;
     private UUID uuid;
+    private int hasRemind;
 
     public Schedule(UUID uuid,String title, String detail, Date deadLine) {
         this.uuid = uuid;
@@ -50,5 +51,13 @@ public class Schedule implements Serializable {
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public int isHasRemind() {
+        return hasRemind;
+    }
+
+    public void setHasRemind(int hasRemaind) {
+        this.hasRemind = hasRemaind;
     }
 }

@@ -16,5 +16,11 @@
         <!--设置不覆盖锚点-->
         <item name="overlapAnchor">false</item>
     </style>
+    
+    <style name="AppTheme.Launcher" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/layer_launcher</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 
 </resources>

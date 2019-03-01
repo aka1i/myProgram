@@ -74,7 +74,7 @@ public class ScheduleAdapater extends RecyclerView.Adapter<RecyclerView.ViewHold
             scheduleTitle.setText(schedule.getTitle());
             scheduleDetail.setText(schedule.getDetail());
             scheduleDeadLine.setText(dateFormat.format(deadLine));
-            if(remainTime < 0)
+            if(t1 > t2)
                 scheduleRemainTime.setTextColor(Color.BLACK);
             if (remainTime / 60  >= 24)
                 scheduleRemainTime.setText("还剩下" + String.valueOf(remainTime / (24 * 60)) + "天");

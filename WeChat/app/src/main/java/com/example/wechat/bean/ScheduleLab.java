@@ -80,7 +80,6 @@ public class ScheduleLab {
     public void updateCrime(Schedule schedule){
         String uuidString = schedule.getUuid().toString();
         ContentValues values = getContentValues(schedule);
-        Log.d("Dasdsa",String.valueOf(schedule.getTitle()));
         mDatabase.update(ScheduleTable.NAME,values,ScheduleTable.Cols.UUID + " = ? ", new String[]{uuidString});
     }
 
@@ -94,6 +93,7 @@ public class ScheduleLab {
         values.put(ScheduleTable.Cols.TITLE,schedule.getTitle());
         values.put(ScheduleTable.Cols.DETAIL,schedule.getDetail());
         values.put(ScheduleTable.Cols.DATE,schedule.getDeadLine().getTime());
+        values.put(ScheduleTable.Cols.HAS_REMIND,schedule.isHasRemind());
         return values;
     }
 }

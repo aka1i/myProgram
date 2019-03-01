@@ -19,7 +19,9 @@ public class ScheduleCursorWrapper extends CursorWrapper {
         String title = getString(getColumnIndex(ScheduleTable.Cols.TITLE));
         long date  = getLong(getColumnIndex(ScheduleTable.Cols.DATE));
         String detail = getString(getColumnIndex(ScheduleTable.Cols.DETAIL));
+        int hasRemind = getInt(getColumnIndex(ScheduleTable.Cols.HAS_REMIND));
         Schedule schedule = new Schedule(UUID.fromString(uuidString),title,detail,new Date(date));
+        schedule.setHasRemind(hasRemind);
         return  schedule;
     }
 }
